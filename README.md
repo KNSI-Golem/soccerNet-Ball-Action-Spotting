@@ -31,7 +31,7 @@ To further help with development, it is recommended to use useful tools for mana
 Python's `venv` allows you to easily manage isolated environments for your projects, enabling you to work with specific module/library versions or even different Python versions without conflicting with the globally installed Python interpreter.
 
 
-How to use:
+**How to use**
 ```bash
 python3 -m venv .venv  # Create venv  
 source .venv/bin/activate  # Activate venv  
@@ -39,7 +39,31 @@ pip install -r requirements.txt  # Install requirements to venv
 ```
 Basic Python libraries like pytest are already included in the requirements.
 
----
+**Download dataset**
+```bash
+python3 -m src.dataset # Download and unzip dataset
+```
+
+**Extracting Frames from Videos**
+
+Default Paths:
+- Input directory: ./data/raw/matches
+- Output directory: ./data/processed/frames
+
+```bash
+    python3 -m src.extract_frames \
+        --video_dir path_to_videos \
+        --out_dir path_to_output_frames
+```
+
+Usage:
+
+```bash
+    python3 -m src.extract_frames \
+        --video_dir data/raw/matches \
+        --out_dir data/processed/frames \
+        --sample_fps 5 --num_workers 3
+```
 
 ### dotenv
 The dotenv library allows you to define environment constants or secrets, such as API keys, in a single place. It simplifies the management of environment variables by letting you configure them in a `.env` file.
