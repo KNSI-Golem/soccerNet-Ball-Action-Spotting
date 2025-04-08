@@ -27,7 +27,7 @@ def unzipDirectory(directory, password):
             print(f"\n🔓 Unzipping: {zip_path}")
 
             try:
-                output_path = directory/filename.replace(".zip", "")
+                output_path = directory / 'matches'
                 unzipFile(zip_path, password, output_path)
                 print(f"✅ Extracted to: {output_path}")
                 
@@ -44,9 +44,10 @@ def main(
 ):
     load_dotenv()
     password = os.getenv("DATA_PASSWD").encode()
-    
+    extra_files = input_path / "ExtraLabelsActionSpotting500games"
     downloadDataset(input_path)
     unzipDirectory(input_path, password)
+    unzipDirectory(extra_files, password)
 
 
 if __name__ == "__main__":
