@@ -5,6 +5,7 @@ Store useful variables and configuration
 from pathlib import Path
 
 from dotenv import load_dotenv
+import os
 
 # Load environment variables from .env file if it exists
 load_dotenv()
@@ -29,3 +30,8 @@ SN_DATA_DIR = DISK_ROOT / "soccernet"
 
 SNB_FRAMES_DIR = DISK_ROOT / "frames_snb"
 SN_FRAMES_DIR = DISK_ROOT / "frames_sn"
+
+# Password
+PASSWORD = os.getenv("PASSWORD")
+
+# Variables
