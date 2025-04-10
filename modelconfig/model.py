@@ -15,8 +15,8 @@ import math
 
 
 #Local imports
-from model.modules import BaseRGBModel, EDSGPMIXERLayers, FCLayers, FC2Layers, step, process_prediction, process_predictionTeam, process_double_head
-from model.shift import make_temporal_shift
+from modelconfig.modules import BaseRGBModel, EDSGPMIXERLayers, FCLayers, FC2Layers, step, process_prediction, process_predictionTeam, process_double_head
+from modelconfig.shift import make_temporal_shift
 
 class TDEEDModel(BaseRGBModel):
 

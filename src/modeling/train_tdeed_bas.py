@@ -17,7 +17,7 @@ import sys
 #Local imports
 from util.io import load_json, store_json
 from dataset.datasets import get_datasets
-from model.model import TDEEDModel
+from modelconfig.model import TDEEDModel
 from torch.optim.lr_scheduler import (
     ChainedScheduler, LinearLR, CosineAnnealingLR)
 from util.eval import mAPevaluate, mAPevaluateTest
@@ -304,8 +304,6 @@ def main(args):
                 wandb.log({'test/classes/mAP@' + inv_classes[j*2+1].split('-')[0] + 'NoTeam': results['mAP_per_class_no_team'][j] * 100})
 
     print('CORRECTLY FINISHED TRAINING AND INFERENCE')
-
-
 
 
 if __name__ == '__main__':

@@ -15,6 +15,7 @@ import json
 # from util.score import compute_mAPs
 from util.io import store_json_snb, load_text
 from util.score import compute_amAP
+from src.config import SN_DATA_DIR, SNB_DATA_DIR
 
 #Constants
 TOLERANCES_SN = [3, 6]
@@ -229,10 +230,10 @@ def mAPevaluateTest(model, split, dataset, classes, printed=True, event_team = F
 
     #Get labels path
     if dataset._dataset == 'soccernet':
-        labels_path = load_text(os.path.join('data', 'soccernet', 'labels_path.txt'))[0]
+        labels_path = SN_DATA_DIR
         label_file = 'Labels-v2.json'
     elif dataset._dataset == 'soccernetball':
-        labels_path = load_text(os.path.join('data', 'soccernetball', 'labels_path.txt'))[0]
+        labels_path = SNB_DATA_DIR
         label_file = 'Labels-ball.json'
 
     #We reload predictions & labels for consistency in the framerate

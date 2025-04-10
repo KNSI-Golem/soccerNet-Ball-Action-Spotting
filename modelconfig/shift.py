@@ -10,8 +10,8 @@ from torch import nn
 import math
 
 #Local imports
-from model.impl.gsm import _GSM
-from model.impl.gsf import _GSF
+from modelconfig.impl.gsm import _GSM
+from modelconfig.impl.gsf import _GSF
 
 
 
