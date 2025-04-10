@@ -7,6 +7,7 @@ from multiprocessing import Pool
 cv2.setNumThreads(0)
 from SoccerNet.Downloader import getListGames
 from util.io import load_text, load_json
+from src.config import SN_FRAMES_DIR, SN_DATA_DIR
 
 '''
 This script extracts frames from SoccerNetv2 Action Spotting dataset by introducing the path where the downloaded videos are (at 720p resolution), the path to
@@ -28,9 +29,9 @@ SN_FPS = 25
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--video_dir', help='Path to the downloaded videos')
+    parser.add_argument('--video_dir', default=SN_FRAMES_DIR)
     parser.add_argument('-o', '--out_dir',
-                        help='Path to write frames. Dry run if None.')
+                        default=SN_DATA_DIR)
     parser.add_argument('--sample_fps', type=float, default=12.5)
     parser.add_argument('-j', '--num_workers', type=int,
                         default=os.cpu_count() // 4)

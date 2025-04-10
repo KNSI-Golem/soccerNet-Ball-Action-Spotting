@@ -4,6 +4,7 @@ import cv2
 import moviepy.editor
 from tqdm import tqdm
 from multiprocessing import Pool
+from src.config import SNB_FRAMES_DIR, SNB_DATA_DIR
 cv2.setNumThreads(0)
 
 '''
@@ -20,9 +21,9 @@ FRAME_CORRECT_THRESHOLD = 1000
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--video_dir', help='Path to the downloaded videos')
+    parser.add_argument('--video_dir', default=SNB_DATA_DIR)
     parser.add_argument('-o', '--out_dir',
-                        help='Path to write frames. Dry run if None.')
+                        default=SNB_FRAMES_DIR)
     parser.add_argument('--sample_fps', type=int, default=25)
     parser.add_argument('-j', '--num_workers', type=int,
                         default=os.cpu_count() // 4)
@@ -105,8 +106,6 @@ def main(args):
     TARGET_HEIGHT = target_height
     global TARGET_WIDTH
     TARGET_WIDTH = target_width
-
-    out_dir = out_dir + str(TARGET_HEIGHT)
 
     worker_args = []
     for league in os.listdir(video_dir):

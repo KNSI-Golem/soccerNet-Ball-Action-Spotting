@@ -1,6 +1,4 @@
 {
-    "frame_dir": "/mnt/disk-d2/frame448",
-    "save_dir": "./models/output",
     "store_mode": "load",
     "batch_size": 4,
     "clip_len": 100,

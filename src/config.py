@@ -33,5 +33,3 @@ SN_FRAMES_DIR = DISK_ROOT / "frames_sn"
 
 # Password
 PASSWORD = os.getenv("PASSWORD")
-
-# Variables

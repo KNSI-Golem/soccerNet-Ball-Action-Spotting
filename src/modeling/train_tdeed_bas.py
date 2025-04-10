@@ -15,14 +15,14 @@ import sys
 
 
 #Local imports
-from util.io import load_json, store_json, load_text
+from util.io import load_json, store_json
 from dataset.datasets import get_datasets
 from model.model import TDEEDModel
 from torch.optim.lr_scheduler import (
     ChainedScheduler, LinearLR, CosineAnnealingLR)
 from util.eval import mAPevaluate, mAPevaluateTest
 from dataset.frame import ActionSpotVideoDataset
-
+from src.config import SN_FRAMES_DIR, SNB_FRAMES_DIR, MODELS_DIR, SN_DATA_DIR, SNB_DATA_DIR
 
 #Constants
 EVAL_SPLITS = ['test', 'challenge']
@@ -41,14 +41,20 @@ def get_args():
 
 def update_args(args, config):
     #Update arguments with config file
-    args.frame_dir = config['frame_dir']
-    args.save_dir = config['save_dir'] + '/' + args.model # + '-' + str(args.seed) -> in case multiple seeds
+    args.dataset = config['dataset']
+    if args.dataset == "soccernet":
+        args.frame_dir = SN_FRAMES_DIR
+    elif args.dataset == "soccernetball":
+        args.frame_dir = SNB_FRAMES_DIR
+    else:
+        raise Exception("Dataset has to be either soccernet or soccernetball")
+
+    args.save_dir = MODELS_DIR / args.model # + '-' + str(args.seed) -> in case multiple seeds
     args.store_dir = os.path.join(config['save_dir'], 'StoreClips', config['dataset']) #where to store clips information
     args.store_mode = config['store_mode']
     args.batch_size = config['batch_size']
     args.clip_len = config['clip_len']
     args.crop_dim = config['crop_dim']
-    args.dataset = config['dataset']
     args.event_team = config['event_team']
     args.radi_displacement = config['radi_displacement']
     args.epoch_num_frames = config['epoch_num_frames']
@@ -71,7 +77,7 @@ def update_args(args, config):
         args.joint_train = config['joint_train']
         args.joint_train['store_dir'] = os.path.join(args.save_dir, 'StoreClips', args.joint_train['dataset'])
     else:
-        args.joint_train = None
+        args.joint_train = None 
     return args
 
 def get_lr_scheduler(args, optimizer, num_steps_per_epoch):
@@ -97,11 +103,10 @@ def main(args):
     args = update_args(args, config)
 
     #Variables for SN & SNB label paths if datastes
-    if (args.dataset == 'soccernet') | (args.dataset == 'soccernetball'):
-        global LABELS_SN_PATH
-        global LABELS_SNB_PATH
-        LABELS_SN_PATH = load_text(os.path.join('data', 'soccernet', 'labels_path.txt'))[0]
-        LABELS_SNB_PATH = load_text(os.path.join('data', 'soccernetball', 'labels_path.txt'))[0]
+    global LABELS_SN_PATH
+    global LABELS_SNB_PATH
+    LABELS_SN_PATH = SN_DATA_DIR
+    LABELS_SNB_PATH = SNB_DATA_DIR
 
     assert args.batch_size % args.acc_grad_iter == 0
     if args.crop_dim <= 0:
