@@ -12,6 +12,7 @@ import random
 from torch.utils.data import DataLoader
 import wandb
 import sys
+from pathlib import Path
 
 
 #Local imports
@@ -22,7 +23,7 @@ from torch.optim.lr_scheduler import (
     ChainedScheduler, LinearLR, CosineAnnealingLR)
 from util.eval import mAPevaluate, mAPevaluateTest
 from dataset.frame import ActionSpotVideoDataset
-from src.config import SN_FRAMES_DIR, SNB_FRAMES_DIR, MODELS_DIR, SN_DATA_DIR, SNB_DATA_DIR
+from src.config import SN_FRAMES_DIR, SNB_FRAMES_DIR, MODELS_DIR, SN_DATA_DIR, SNB_DATA_DIR, MODEL_CONFIG_DIR
 
 #Constants
 EVAL_SPLITS = ['test', 'challenge']
@@ -50,7 +51,7 @@ def update_args(args, config):
         raise Exception("Dataset has to be either soccernet or soccernetball")
 
     args.save_dir = MODELS_DIR / args.model # + '-' + str(args.seed) -> in case multiple seeds
-    args.store_dir = os.path.join(config['save_dir'], 'StoreClips', config['dataset']) #where to store clips information
+    args.store_dir = args.save_dir / 'StoreClips' / config['dataset'] #where to store clips information
     args.store_mode = config['store_mode']
     args.batch_size = config['batch_size']
     args.clip_len = config['clip_len']
@@ -75,7 +76,7 @@ def update_args(args, config):
     args.num_workers = config['num_workers']
     if 'joint_train' in config:
         args.joint_train = config['joint_train']
-        args.joint_train['store_dir'] = os.path.join(args.save_dir, 'StoreClips', args.joint_train['dataset'])
+        args.joint_train['store_dir'] = args.save_dir / 'StoreClips' / args.joint_train['dataset']
     else:
         args.joint_train = None 
     return args
@@ -98,8 +99,8 @@ def main(args):
     np.random.seed(args.seed)
     random.seed(args.seed)
 
-    config_path = args.model.split('_')[0] + '/' + args.model + '.json'
-    config = load_json(os.path.join('config', config_path))
+    config_path = MODEL_CONFIG_DIR / Path(args.model + '.json')
+    config = load_json(config_path)
     args = update_args(args, config)
 
     #Variables for SN & SNB label paths if datastes
@@ -114,9 +115,10 @@ def main(args):
 
     # initialize wandb
     wandb.login()
-    if not os.path.exists(args.save_dir + '/wandb_logs'):
-        os.makedirs(args.save_dir + '/wandb_logs', exist_ok=True)
-    wandb.init(config = args, dir = args.save_dir + '/wandb_logs', project = 'TDEED-snbas2025', name = args.model + '-' + str(args.seed))
+    wandb_log_dir = args.save_dir / 'wandb_logs'
+    if not os.path.exists(wandb_log_dir):
+        os.makedirs(wandb_log_dir, exist_ok=True)
+    wandb.init(config = args, dir = args.save_dir / 'wandb_logs', project = 'TDEED-snbas2025', name = args.model + '-' + str(args.seed))
 
     # Get datasets train, validation (and validation for map -> Video dataset)
     classes, joint_train_classes, train_data, val_data, val_data_frames = get_datasets(args)
