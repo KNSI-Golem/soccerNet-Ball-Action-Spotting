@@ -13,7 +13,7 @@ import json
 
 #Local imports
 # from util.score import compute_mAPs
-from util.io import store_json_snb, load_text
+from util.io import store_json_snb
 from util.score import compute_amAP
 from src.config import SN_DATA_DIR, SNB_DATA_DIR
 
@@ -26,10 +26,8 @@ INFERENCE_BATCH_SIZE = 4
 FPS_SN = 25
 
 GAMES_SNB = {
-        'train': ["england_efl/2019-2020/2019-10-01 - Leeds United - West Bromwich",
-            "england_efl/2019-2020/2019-10-01 - Hull City - Sheffield Wednesday",
-            "england_efl/2019-2020/2019-10-01 - Brentford - Bristol City",
-            "england_efl/2019-2020/2019-10-01 - Blackburn Rovers - Nottingham Forest"],
+        'train': ["england_efl/2019-2020/2019-10-01 - Leeds United - West Bromwich"
+            "england_efl/2019-2020/2019-10-01 - Brentford - Bristol City"],
         'val' : ["england_efl/2019-2020/2019-10-01 - Middlesbrough - Preston North End"],
         'test': ["england_efl/2019-2020/2019-10-01 - Stoke City - Huddersfield Town",
             "england_efl/2019-2020/2019-10-01 - Reading - Fulham"],
