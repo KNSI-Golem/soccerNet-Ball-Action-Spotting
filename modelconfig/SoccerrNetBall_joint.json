@@ -21,5 +21,10 @@
     "sgp_r": 4,
     "only_test": false,
     "criterion": "map",
-    "num_workers": 4
+    "num_workers": 4,
+    "joint_train": {
+        "frame_dir": "/data/disk-d2/frame448",
+        "dataset": "soccernetball",
+        "num_classes": 17
+    }
 }
