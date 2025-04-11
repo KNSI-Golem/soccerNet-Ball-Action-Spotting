@@ -90,6 +90,10 @@ def worker(args):
             i += 1
     vc.release()
 
+    if os.path.exists(video_path):
+        os.remove(video_path)
+        print(f'{video_name} - original video deleted')
+
     print('{} - done'.format(video_name))
 
 

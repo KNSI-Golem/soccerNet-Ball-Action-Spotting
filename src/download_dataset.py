@@ -3,7 +3,7 @@ Code to download or generate data
 """
 
 from pathlib import Path
-from src.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
+from src.config import PROCESSED_DATA_DIR, SNB_DATA_DIR, PASSWORD
 from huggingface_hub import snapshot_download
 
 import pyzipper
@@ -24,30 +24,23 @@ def unzipDirectory(directory, password):
     for filename in os.listdir(directory):
         if filename.endswith('.zip'):
             zip_path = os.path.join(directory, filename)
-            print(f"\n🔓 Unzipping: {zip_path}")
+            print(f"\nUnzipping: {zip_path}")
 
             try:
-                output_path = directory / 'soccernetball'
-                unzipFile(zip_path, password, output_path)
-                print(f"✅ Extracted to: {output_path}")
+                unzipFile(zip_path, password, directory)
                 
                 os.remove(zip_path)
-                print(f"🗑️ Deleted zip file: {zip_path}")
             
             except RuntimeError as e:
-                print(f"❌ Failed to unzip {filename}: {e}")
+                print(f"Failed to unzip {filename}: {e}")
 
 def main(
-    input_path: Path = RAW_DATA_DIR,
-    output_path: Path = PROCESSED_DATA_DIR
+    input_path: Path = SNB_DATA_DIR / 'test'
     
 ):
     load_dotenv()
-    password = os.getenv("DATA_PASSWD").encode()
-    extra_files = input_path / "ExtraLabelsActionSpotting500games"
     downloadDataset(input_path)
-    unzipDirectory(input_path, password)
-    unzipDirectory(extra_files, password)
+    unzipDirectory(input_path, PASSWORD)
 
 
 if __name__ == "__main__":
