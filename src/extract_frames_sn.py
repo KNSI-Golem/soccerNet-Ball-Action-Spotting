@@ -7,7 +7,7 @@ from multiprocessing import Pool
 cv2.setNumThreads(0)
 from SoccerNet.Downloader import getListGames
 from util.io import load_text, load_json
-from src.config import SN_FRAMES_DIR, SN_DATA_DIR
+from src.config import SN_FRAMES_DIR, SN_DATA_DIR, SN_LABELS_DIR
 
 '''
 This script extracts frames from SoccerNetv2 Action Spotting dataset by introducing the path where the downloaded videos are (at 720p resolution), the path to
@@ -49,7 +49,7 @@ def worker(args):
 
     video_name, video_path, out_dir, sample_fps = args
 
-    LABELS_SN_PATH = load_text(os.path.join('data', 'soccernet', 'labels_path.txt'))[0]
+    LABELS_SN_PATH = SN_LABELS_DIR
     label_path = os.path.join(LABELS_SN_PATH, "/".join(video_name.split('/')[:-1]) + '/Labels-v2.json')
     labels_file = load_json(label_path)['annotations']
     half = int(video_name.split('/')[-1][0])

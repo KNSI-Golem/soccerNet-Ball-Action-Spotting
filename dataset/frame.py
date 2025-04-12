@@ -5,7 +5,7 @@ File containing classes related to the frame datasets.
 """
 
 #Standard imports
-from util.io import load_json, load_text
+from util.io import load_json
 import os
 import random
 import numpy as np
@@ -16,6 +16,7 @@ import torchvision
 from tqdm import tqdm
 import pickle
 import math
+from src.config import SN_LABELS_DIR, SNB_LABELS_DIR
 
 #Local imports
 
@@ -89,8 +90,8 @@ class ActionSpotDataset(Dataset):
         if (self._dataset == 'soccernet') | (self._dataset == 'soccernetball'):
             global LABELS_SN_PATH
             global LABELS_SNB_PATH
-            LABELS_SN_PATH = load_text(os.path.join('data', 'raw', 'soccernetball', 'labels_path.txt'))[0]
-            LABELS_SNB_PATH = load_text(os.path.join('data', 'raw', 'soccernetball', 'labels_path.txt'))[0]
+            LABELS_SN_PATH = SN_LABELS_DIR
+            LABELS_SNB_PATH = SNB_LABELS_DIR
 
         #Store or load clips
         if self._store_mode == 'store':
@@ -370,8 +371,8 @@ class ActionSpotVideoDataset(Dataset):
         if (self._dataset == 'soccernet') | (self._dataset == 'soccernetball'):
             global LABELS_SN_PATH
             global LABELS_SNB_PATH
-            LABELS_SN_PATH = load_text(os.path.join('data', 'raw', 'soccernetball', 'labels_path.txt'))[0]
-            LABELS_SNB_PATH = load_text(os.path.join('data', 'raw', 'soccernetball', 'labels_path.txt'))[0]
+            LABELS_SN_PATH = SN_LABELS_DIR
+            LABELS_SNB_PATH = SNB_LABELS_DIR
 
     def __len__(self):
         return len(self._clips)
