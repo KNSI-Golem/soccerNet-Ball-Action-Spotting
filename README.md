@@ -12,34 +12,55 @@ This repository's goal is to provide out-of-the-box boilerplate code with a clea
 Additionally, the template includes a GitHub CI pipeline with pytest and flake8 checks implemented.
 
 
-You are free to delete any unnecessary folders and files. However, it is recommended to maintain the overall file structure to ensure clean code and compatibility with other KNSI GOLEM repositories.
 ## What is here?
 ### Code and Files Structure
 To ensure a transparent and easily understandable file structure for external users each module, from making plots to training models, is given its respective file in the `src` folder. A full description of the file structure is provided in the [Project Organization](#project-organization) section.
 
 
 **How to run code in repository?**
-```bash
-python3 -m src.dataset
-```
-### Readme
-Another goal of this repository is to provide a [template README](/TEMPLATE_README.md) that can be easily edited and adapted. The README serves as a foundation to help users create their own well-structured documentation, ensuring consistency across all projects within our repository.
 
-## Additional tips and info
-To further help with development, it is recommended to use useful tools for managing dependencies and environment configurations.
+First of all you need  to install requirements
 ### venv
 Python's `venv` allows you to easily manage isolated environments for your projects, enabling you to work with specific module/library versions or even different Python versions without conflicting with the globally installed Python interpreter.
 
 
-How to use:
+**How to use**
 ```bash
 python3 -m venv .venv  # Create venv  
 source .venv/bin/activate  # Activate venv  
 pip install -r requirements.txt  # Install requirements to venv  
 ```
-Basic Python libraries like pytest are already included in the requirements.
 
----
+Then you need to create .env file in project directory that conatains password to soccernet data
+**.env file example:**
+```bash
+PASSWORD = "password_to_unzip_data"
+```
+
+**Download dataset**
+```bash
+python3 -m src.download_dataset # Download and unzip dataset
+```
+
+**Extracting Frames from Videos**
+
+```bash
+python3 -m src.extract_frames_snb
+```
+
+Usage:
+
+```bash
+python3 -m src.extract_frames \
+    --sample_fps 5 --num_workers 3
+```
+
+**Train the model**
+```bash
+python3 -m src.modeling.train_tdeed_bas --model SoccerNetBall_baseline
+```
+
+SoccerNetBall_baseline is json file stored in modelconfig directory, you should start training twice - first on the "store_mode": "store" and after that "store_mode": "load."
 
 ### dotenv
 The dotenv library allows you to define environment constants or secrets, such as API keys, in a single place. It simplifies the management of environment variables by letting you configure them in a `.env` file.
